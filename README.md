@@ -1,13 +1,13 @@
 # Trabalho Curva_reacao
 Trabalho desenvolvido por:
 
-Alexandre Magno
+- Alexandre Magno
 
-Andre Cid
+- Andre Cid
 
-Evandro Andrey
+- Evandro Andrey
 
-Maurício Sathler
+- Maurício Sathler
  
 Para rodar o exemplo:
 
