@@ -5,6 +5,7 @@ import control
 from control import matlab
 from collections import deque
 import scipy
+from scipy import odr
 from scipy.ndimage import gaussian_filter1d
 from numpy.lib.function_base import append
 from scipy.ndimage.filters import gaussian_filter
@@ -61,10 +62,10 @@ class parse_tanque_data():
         
     def tanget(self):    
         self._tangent = np.diff(self._V_filtrado)
-        self._m = self._tangent[self._infls[5]-200]
+        self._m = self._tangent[self._infls[4]-200]
         
         for ee in range(self._posicao_corte,self._posicao_corte+300):
-            self.tan_x.append(ee+47.1)
+            self.tan_x.append(ee+52)
             self.tan_y.append((self._m*ee)-9)
         return self.tan_x, self.tan_y
 
@@ -93,10 +94,22 @@ class parse_tanque_data():
         self.m_degrau()
         self.stab_limit()
     
+    def teste(self):
+        poly_model = scipy.odr.polynomial(4)
+        data = odr.Data(self._t_experimento,self._altura_tanque)
+        odr_obj = odr.ODR(data,poly_model)
+        output = odr_obj.run()
+        poly = np.poly1d(output.beta[::-1])
+        poly_y = poly(self._t_experimento)
+        plt.plot(self._t_experimento,self._altura_tanque)
+        plt.plot(self._t_experimento,poly_y)
+        plt.show()
+    
+    
     def plot(self):
     
         plt.plot(self._t_experimento,self._altura_tanque,linewidth= "0.5",color="blue",label="Dados Coletados")
-        plt.plot(self.tan_x,self.tan_y,label = "Tangente",color = "gray")
+        plt.plot(self.tan_x,self.tan_y,label = "Tangente",color = "purple")
         plt.plot(self._t_experimento,self._V_filtrado,linewidth= "2",label = "Dados Suavizados",color = "orange")
         for e,infl in enumerate(self._infls,1):
             if ((infl >= self.x_deg) and infl <= (self.x_deg+100)):
@@ -123,4 +136,5 @@ class parse_tanque_data():
     def filtrado(self):
          return self._filtrado
               
-
+# a = parse_tanque_data()
+# a.teste()
