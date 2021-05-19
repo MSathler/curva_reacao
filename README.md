@@ -9,7 +9,7 @@ Evandro Andrey
 
 Maurício Sathler
  
-To run an example:
+Para rodar o exemplo:
 
     $ python3 init.py
 
